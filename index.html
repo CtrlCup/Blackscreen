@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Blackscreen Webseite | Vollbild und Mauszeiger-Ausblendung</title>
+    <meta name="description" content="Eine einfache Blackscreen-Webseite von Gamerfreak_LP, die beim Doppelklick in den Vollbildmodus wechselt und den Mauszeiger ausblendet.">
+    <meta name="keywords" content="Blackscreen, Vollbildmodus, Mauszeiger ausblenden, Präsentation, Bildschirm abdunkeln, Gamerfreak_LP, dunkler Bildschirm, Bildschirm schwarz, Monitor abdunkeln, Hintergrund schwarz, Mauszeiger verstecken, Fokusmodus, ablenkungsfreier Modus, Bildschirm ausblenden, Ruhemodus für Bildschirm">
+    <meta name="author" content="Gamerfreak_LP">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><circle cx='8' cy='8' r='8' fill='black'/></svg>" type="image/svg+xml">
+
+    <!-- Open Graph Meta-Tags für bessere Sichtbarkeit auf sozialen Medien -->
+    <meta property="og:title" content="Blackscreen Webseite | Vollbild und Mauszeiger-Ausblendung">
+    <meta property="og:description" content="Eine einfache Blackscreen-Webseite von Gamerfreak_LP, die beim Doppelklick in den Vollbildmodus wechselt und den Mauszeiger ausblendet.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://blackscreen.gamerfreak.eu.de">
+    <meta property="og:image" content="https://blackscreen.gamerfreak.eu.de/blackscreen.png">
+
+    <!-- Twitter Card Meta-Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Blackscreen Webseite | Vollbild und Mauszeiger-Ausblendung">
+    <meta name="twitter:description" content="Eine einfache Blackscreen-Webseite von Gamerfreak_LP, die beim Doppelklick in den Vollbildmodus wechselt und den Mauszeiger ausblendet.">
+    <meta name="twitter:image" content="https://blackscreen.gamerfreak.eu.de/blackscreen.png">
+
+    <!-- Schema.org Markup für strukturierte Daten -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Blackscreen Webseite | Vollbild und Mauszeiger-Ausblendung",
+      "description": "Eine einfache Blackscreen-Webseite von Gamerfreak_LP, die beim Doppelklick in den Vollbildmodus wechselt und den Mauszeiger ausblendet.",
+      "url": "https://blackscreen.gamerfreak.eu"
+    }
+    </script>
+
+    <style>
+        body {
+            margin: 0;
+            background-color: black;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden; /* Verhindert Scrollbalken */
+        }
+        .info-text {
+            color: white;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: Arial, sans-serif;
+            text-align: center;
+            max-width: 90%; /* Verhindert horizontales Scrollen bei langen Texten */
+        }
+    </style>
+</head>
+<body ondblclick="toggleFullScreen()">
+    <noscript>
+        <p class="info-text">
+            Diese Webseite erfordert JavaScript, um korrekt zu funktionieren.
+        </p>
+    </noscript>
+    <div id="info" class="info-text">
+        - Blackscreen -<br>
+        Double-click for full screen mode<br><br><br>
+        Powered by Gamerfreak_LP
+    </div>
+    <script>
+        // Ändere den Titel der Seite nach dem Laden
+        document.addEventListener('DOMContentLoaded', () => {
+            document.title = 'Blackscreen | Gamerfreak_LP';
+            // Entferne den sichtbaren Text nach 2 Sekunden
+            setTimeout(() => {
+                document.getElementById('info').style.display = 'none';
+            }, 2000);
+        });
+
+        let mouseTimer;
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    alert(`Fehler beim Aktivieren des Vollbildmodus: ${err.message} (${err.name})`);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        function showCursor() {
+            document.body.style.cursor = 'default';
+            if (mouseTimer) {
+                clearTimeout(mouseTimer);
+            }
+            mouseTimer = setTimeout(hideCursor, 3000); // 3 Sekunden Verzögerung
+        }
+
+        function hideCursor() {
+            document.body.style.cursor = 'none';
+        }
+
+        function startCursorHide() {
+            // Zeige den Cursor an und starte den Timer zum Ausblenden
+            showCursor();
+            document.addEventListener('mousemove', showCursor);
+        }
+
+        function stopCursorHide() {
+            // Zeige den Cursor an und entferne Event Listener und Timer
+            document.body.style.cursor = 'default';
+            document.removeEventListener('mousemove', showCursor);
+            if (mouseTimer) {
+                clearTimeout(mouseTimer);
+            }
+        }
+
+        document.addEventListener('fullscreenchange', () => {
+            if (document.fullscreenElement) {
+                // Wir sind im Vollbildmodus
+                startCursorHide();
+            } else {
+                // Wir haben den Vollbildmodus verlassen
+                stopCursorHide();
+            }
+        });
+    </script>
+</body>
+</html>
